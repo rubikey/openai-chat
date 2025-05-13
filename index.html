@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>✨ Asistente con GPT-4o</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+    textarea { width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    .respuesta { background: #f4f4f4; padding: 15px; margin-top: 15px; border-radius: 5px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>✨ Asistente con GPT-4o</h1>
+  <p>Escribe tu pregunta o texto y pulsa "Enviar":</p>
+  <textarea id="inputTexto" placeholder="Ejemplo: Explica qué es una interrupción en ARM..."></textarea><br>
+  <button onclick="consultar()">Enviar</button>
+  <div id="respuesta" class="respuesta"></div>
+
+  <script>
+    async function consultar() {
+      const input = document.getElementById("inputTexto").value;
+      const respuestaDiv = document.getElementById("respuesta");
+
+      if (!input) {
+        alert("Escribe algo primero");
+        return;
+      }
+
+      respuestaDiv.textContent = "Cargando respuesta...";
+
+      try {
+        const res = await fetch("/api/chatgpt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: input })
+        });
+        const data = await res.json();
+        respuestaDiv.textContent = data.output || "Sin respuesta.";
+      } catch (error) {
+        respuestaDiv.textContent = "Error al conectar con ChatGPT.";
+      }
+    }
+  </script>
+</body>
+</html>
