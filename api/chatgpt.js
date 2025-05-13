@@ -24,7 +24,15 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || "Sin respuesta";
+    console.log("Respuesta completa de OpenAI:", JSON.stringify(data, null, 2));
+
+   if (!data.choices || data.choices.length === 0) {
+    return res.status(500).json({ output: "Error: No se recibió respuesta del modelo." });
+  }
+
+    const text = data.choices[0].message.content?.trim() || "Sin contenido en la respuesta";
+    res.status(200).json({ output: text });
+
     res.status(200).json({ output: text });
 
   } catch (error) {
