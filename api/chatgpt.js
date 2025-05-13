@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-4.1",
+        model: "gpt-4o",
         messages: [{ role: "user", content: prompt }]
       })
     });
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     const text = data.choices[0].message.content?.trim() || "Sin contenido en la respuesta";
     res.status(200).json({ output: text });
 
-    res.status(200).json({ output: text });
+   
 
   } catch (error) {
     console.error("Error en OpenAI:", error);
